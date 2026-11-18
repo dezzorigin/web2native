@@ -66,7 +66,7 @@ function Landing({ onEnter }: { onEnter: () => void }) {
         <Github className="w-4 h-4" /> Lihat di GitHub
        </a>
       </div>
-      <p className="text-xs text-gray-500 mt-5 max-w-md leading-relaxed">
+      <p className="text-xs text-gray-600 mt-5 max-w-md leading-relaxed">
        Build memakai API demo webtonative.com — hasilnya APK/IPA demo, bukan build production bersertifikat toko aplikasi.
       </p>
      </div>
@@ -78,13 +78,13 @@ function Landing({ onEnter }: { onEnter: () => void }) {
          <Smartphone className="w-5 h-5 text-primary" />
          <span className="font-bold text-sm">Pratinjau Builder</span>
         </div>
-        <div className="bg-surface rounded-xl px-4 py-3 text-sm font-semibold text-gray-500">My Premium App</div>
-        <div className="bg-surface rounded-xl px-4 py-3 text-sm font-semibold text-gray-500 flex items-center gap-2">
+        <div className="bg-surface rounded-xl px-4 py-3 text-sm font-semibold text-gray-600">My Premium App</div>
+        <div className="bg-surface rounded-xl px-4 py-3 text-sm font-semibold text-gray-600 flex items-center gap-2">
          <Globe className="w-4 h-4" /> example.com
         </div>
         <div className="bg-primary text-white rounded-full py-3 text-center text-sm font-bold">Get Web2Native Bundle</div>
         <div className="grid grid-cols-2 gap-2">
-         <div className="bg-[#FF895D] text-white rounded-full py-2.5 text-center text-xs font-bold flex items-center justify-center gap-1">
+         <div className="bg-[#FF895D] text-black rounded-full py-2.5 text-center text-xs font-bold flex items-center justify-center gap-1">
           <Download className="w-3.5 h-3.5" /> Android
          </div>
          <div className="bg-white border border-border rounded-full py-2.5 text-center text-xs font-bold flex items-center justify-center gap-1">
@@ -110,7 +110,7 @@ function Landing({ onEnter }: { onEnter: () => void }) {
        <div key={f.title} className="bg-surface rounded-3xl p-6 border border-border shadow-sm">
         <div className="w-10 h-10 rounded-full bg-white border border-border flex items-center justify-center shadow-sm mb-4">{f.icon}</div>
         <h3 className="font-bold text-[15px]">{f.title}</h3>
-        <p className="text-xs text-gray-500 mt-1.5 font-medium leading-relaxed">{f.desc}</p>
+        <p className="text-xs text-gray-600 mt-1.5 font-medium leading-relaxed">{f.desc}</p>
        </div>
       ))}
      </div>
@@ -127,7 +127,7 @@ function Landing({ onEnter }: { onEnter: () => void }) {
        <div key={s.n} className="bg-surface rounded-3xl p-6 border border-border shadow-sm">
         <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm mb-4">{s.n}</div>
         <h3 className="font-bold text-[15px]">{s.title}</h3>
-        <p className="text-xs text-gray-500 mt-1.5 font-medium leading-relaxed">{s.desc}</p>
+        <p className="text-xs text-gray-600 mt-1.5 font-medium leading-relaxed">{s.desc}</p>
        </div>
       ))}
      </div>
@@ -143,7 +143,7 @@ function Landing({ onEnter }: { onEnter: () => void }) {
    </main>
 
    <footer className="w-full border-t border-border py-6">
-    <div className="max-w-5xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-gray-500 font-medium">
+    <div className="max-w-5xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-gray-600 font-medium">
      <span>Web2Native — dibuat oleh <span className="font-bold text-primary">dezzorigin</span></span>
      <span>Build ditenagai webtonative.com (API demo)</span>
      <a href="https://github.com/dezzorigin/web2native" target="_blank" rel="noreferrer" className="flex items-center gap-1.5 font-bold text-primary hover:underline">
@@ -615,7 +615,7 @@ export default function Home() {
  href={buildStatus.android_url}
  target="_blank"
  rel="noreferrer"
- className="w-full bg-[#FF895D] hover:bg-[#ff7a45] text-white py-4 rounded-full flex items-center justify-center gap-2 transition-all font-bold text-[15px] shadow-[0_8px_20px_rgba(255,137,93,0.3)]"
+ className="w-full bg-[#FF895D] hover:bg-[#ff7a45] text-black py-4 rounded-full flex items-center justify-center gap-2 transition-all font-bold text-[15px] shadow-[0_8px_20px_rgba(255,137,93,0.3)]"
  >
  <Download className="w-5 h-5" /> Download Android APK
  </a>
