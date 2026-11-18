@@ -68,8 +68,19 @@ jobs:
       # Audit dibatasi ke dependensi produksi (--omit=dev): temuan di dev
       # (mis. eslint toolchain) tidak pernah dikirim ke pengguna.
       - name: Dependency audit (production, high and above)
-        # npm audit endpoint occasionally flakes; one retry. A real high+ finding fails both runs.
-        run: npm audit --omit=dev --audit-level=high || npm audit --omit=dev --audit-level=high
+        # npm audit exits 1 both for real high+ findings and for endpoint
+        # errors. On failure, dump the JSON so the cause is visible in the
+        # log instead of a bare exit code. (Prod tree verified clean via the
+        # GitHub Advisory DB, 2026-11-18; the first two runs failed here
+        # with no matching high/critical advisory.)
+        run: |
+          npm audit --omit=dev --audit-level=high || {
+            echo "--- npm audit JSON (production) ---"
+            npm audit --omit=dev --json | head -c 8000 || true
+            echo ""
+            echo "--- end audit JSON ---"
+            exit 1
+          }
 
   lighthouse:
     needs: build
