@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Download, Loader2, Globe, AlertCircle, CheckCircle2, History, Trash2, LayoutTemplate, Layers, Cpu, Code, Hexagon } from 'lucide-react';
+import { Download, Loader2, Globe, AlertCircle, CheckCircle2, History, Trash2, LayoutTemplate, Layers, Cpu, Code, Hexagon, Github, Smartphone, Zap, ShieldCheck, ArrowRight, ArrowLeft } from 'lucide-react';
 
 interface HistoryItem {
  id: string;
@@ -14,6 +14,147 @@ interface HistoryItem {
  iosUrl?: string | null;
 }
 
+// SaaS landing — tampil di kunjungan pertama; pengunjung yang kembali
+// langsung masuk builder (flag w2n-entered di localStorage, pola sama
+// seperti frynime). Landing jujur soal apa produk ini: build-nya lewat
+// API demo webtonative.com, hasilnya APK/IPA demo.
+function Landing({ onEnter }: { onEnter: () => void }) {
+ return (
+  <div className="min-h-screen bg-background text-foreground font-sans flex flex-col">
+   <header className="w-full max-w-5xl mx-auto flex justify-between items-center px-4 md:px-8 py-4 sticky top-0 bg-background/90 backdrop-blur z-10">
+    <div className="flex items-center gap-3">
+     <Hexagon className="w-8 h-8 text-primary" />
+     <span className="font-bold text-lg tracking-tight leading-none">Web2Native</span>
+    </div>
+    <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
+     <a href="#fitur" className="hover:text-primary transition-colors">Fitur</a>
+     <a href="#cara-kerja" className="hover:text-primary transition-colors">Cara Kerja</a>
+    </nav>
+    <a
+     href="https://github.com/dezzorigin/web2native"
+     target="_blank"
+     rel="noreferrer"
+     aria-label="Lihat di GitHub"
+     className="p-2 rounded-full hover:bg-surface transition-colors"
+    >
+     <Github className="w-5 h-5" />
+    </a>
+   </header>
+
+   <main className="flex-1 w-full max-w-5xl mx-auto px-4 md:px-8 pb-16">
+    <section className="grid md:grid-cols-2 gap-10 items-center py-10 md:py-16">
+     <div>
+      <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
+       Ubah website jadi aplikasi Android &amp; iOS.
+      </h1>
+      <p className="text-base text-gray-600 font-medium mt-4 max-w-md leading-relaxed">
+       Masukkan nama aplikasi dan URL website — Web2Native membungkusnya jadi APK &amp; IPA demo lewat webtonative.com. Tanpa coding, tanpa install Android Studio.
+      </p>
+      <div className="flex flex-wrap gap-3 mt-8">
+       <button
+        onClick={onEnter}
+        className="bg-primary hover:bg-primary-hover text-white font-bold px-6 py-3.5 rounded-full flex items-center gap-2 transition-transform active:scale-[0.98] shadow-[0_8px_20px_rgba(0,0,0,0.15)] text-[15px]"
+       >
+        Buka Builder <ArrowRight className="w-4 h-4" />
+       </button>
+       <a
+        href="https://github.com/dezzorigin/web2native"
+        target="_blank"
+        rel="noreferrer"
+        className="bg-white hover:bg-gray-50 text-primary border border-border px-6 py-3.5 rounded-full font-bold text-[15px] flex items-center gap-2 transition-colors shadow-sm"
+       >
+        <Github className="w-4 h-4" /> Lihat di GitHub
+       </a>
+      </div>
+      <p className="text-xs text-gray-600 mt-5 max-w-md leading-relaxed">
+       Build memakai API demo webtonative.com — hasilnya APK/IPA demo, bukan build production bersertifikat toko aplikasi.
+      </p>
+     </div>
+
+     <div className="mx-auto w-full max-w-[300px]">
+      <div className="rounded-[2rem] border border-border bg-surface shadow-[0_8px_30px_rgba(0,0,0,0.06)] p-4">
+       <div className="rounded-[1.5rem] bg-background p-4 flex flex-col gap-3">
+        <div className="flex items-center gap-2">
+         <Smartphone className="w-5 h-5 text-primary" />
+         <span className="font-bold text-sm">Pratinjau Builder</span>
+        </div>
+        <div className="bg-surface rounded-xl px-4 py-3 text-sm font-semibold text-gray-600">My Premium App</div>
+        <div className="bg-surface rounded-xl px-4 py-3 text-sm font-semibold text-gray-600 flex items-center gap-2">
+         <Globe className="w-4 h-4" /> example.com
+        </div>
+        <div className="bg-primary text-white rounded-full py-3 text-center text-sm font-bold">Get Web2Native Bundle</div>
+        <div className="grid grid-cols-2 gap-2">
+         <div className="bg-[#FF895D] text-black rounded-full py-2.5 text-center text-xs font-bold flex items-center justify-center gap-1">
+          <Download className="w-3.5 h-3.5" /> Android
+         </div>
+         <div className="bg-white border border-border rounded-full py-2.5 text-center text-xs font-bold flex items-center justify-center gap-1">
+          <Download className="w-3.5 h-3.5" /> iOS
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+
+    <section id="fitur" className="py-10">
+     <h2 className="text-2xl font-bold tracking-tight text-center mb-8">Fitur</h2>
+     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {[
+       { icon: <Smartphone className="w-5 h-5 text-primary" />, title: 'Android & iOS sekaligus', desc: 'Satu kali submit, dua paket build: APK Android dan IPA iOS.' },
+       { icon: <Zap className="w-5 h-5 text-primary" />, title: 'Tanpa coding', desc: 'Tidak perlu Android Studio, Xcode, atau sertifikat. Isi form, tunggu, unduh.' },
+       { icon: <History className="w-5 h-5 text-primary" />, title: 'Riwayat build tersimpan', desc: 'Build sebelumnya tersimpan di perangkatmu (localStorage) — unduh ulang kapan saja.' },
+       { icon: <Loader2 className="w-5 h-5 text-primary" />, title: 'Status build live', desc: 'Progress Android dan iOS dipantau tiap 5 detik sampai keduanya selesai.' },
+       { icon: <ShieldCheck className="w-5 h-5 text-primary" />, title: 'Rate limit 1/hari', desc: 'Satu build per 24 jam per perangkat, supaya layanan demo tidak di-spam.' },
+       { icon: <Globe className="w-5 h-5 text-primary" />, title: 'Situs apa saja', desc: 'Selama URL-nya valid dan bisa diakses publik, situs responsif apa pun bisa dibungkus.' },
+      ].map((f) => (
+       <div key={f.title} className="bg-surface rounded-3xl p-6 border border-border shadow-sm">
+        <div className="w-10 h-10 rounded-full bg-white border border-border flex items-center justify-center shadow-sm mb-4">{f.icon}</div>
+        <h3 className="font-bold text-[15px]">{f.title}</h3>
+        <p className="text-xs text-gray-600 mt-1.5 font-medium leading-relaxed">{f.desc}</p>
+       </div>
+      ))}
+     </div>
+    </section>
+
+    <section id="cara-kerja" className="py-10">
+     <h2 className="text-2xl font-bold tracking-tight text-center mb-8">Cara Kerja</h2>
+     <div className="grid md:grid-cols-3 gap-4">
+      {[
+       { n: '1', title: 'Input nama & URL', desc: 'Isi nama aplikasi yang tampil di perangkat dan URL website yang mau dibungkus.' },
+       { n: '2', title: 'Webtonative membungkus', desc: 'Server webtonative.com mengemas situsmu jadi konfigurasi native Android & iOS (sekitar 2 menit).' },
+       { n: '3', title: 'Unduh APK & IPA', desc: 'Begitu kedua platform DONE, tombol unduh Android dan iOS muncul — simpan dan install.' },
+      ].map((s) => (
+       <div key={s.n} className="bg-surface rounded-3xl p-6 border border-border shadow-sm">
+        <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm mb-4">{s.n}</div>
+        <h3 className="font-bold text-[15px]">{s.title}</h3>
+        <p className="text-xs text-gray-600 mt-1.5 font-medium leading-relaxed">{s.desc}</p>
+       </div>
+      ))}
+     </div>
+     <div className="text-center mt-10">
+      <button
+       onClick={onEnter}
+       className="bg-primary hover:bg-primary-hover text-white font-bold px-8 py-4 rounded-full transition-transform active:scale-[0.98] shadow-[0_8px_20px_rgba(0,0,0,0.15)] text-[15px]"
+      >
+       Mulai Bungkus Website-mu
+      </button>
+     </div>
+    </section>
+   </main>
+
+   <footer className="w-full border-t border-border py-6">
+    <div className="max-w-5xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-gray-600 font-medium">
+     <span>Web2Native — dibuat oleh <span className="font-bold text-primary">dezzorigin</span></span>
+     <span>Build ditenagai webtonative.com (API demo)</span>
+     <a href="https://github.com/dezzorigin/web2native" target="_blank" rel="noreferrer" className="flex items-center gap-1.5 font-bold text-primary hover:underline">
+      <Github className="w-4 h-4" /> github.com/dezzorigin/web2native
+     </a>
+    </div>
+   </footer>
+  </div>
+ );
+}
+
 export default function Home() {
  const [appName, setAppName] = useState('');
  const [websiteUrl, setWebsiteUrl] = useState('');
@@ -22,6 +163,18 @@ export default function Home() {
  const [requestId, setRequestId] = useState<string | null>(null);
  const [buildStatus, setBuildStatus] = useState<any>(null);
  const [isDone, setIsDone] = useState(false);
+
+ // Landing gate: kunjungan pertama lihat landing, kunjungan berikut
+ // langsung masuk builder.
+ const [entered, setEntered] = useState<boolean | null>(null);
+ useEffect(() => {
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  setEntered(localStorage.getItem('w2n-entered') === '1');
+ }, []);
+ const enterBuilder = () => {
+  localStorage.setItem('w2n-entered', '1');
+  setEntered(true);
+ };
 
  // History state
  const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -205,6 +358,10 @@ export default function Home() {
  }, [requestId, isDone]);
 
  // View renderer
+ if (entered === false) {
+  return <Landing onEnter={enterBuilder} />;
+ }
+
  return (
  <div className="min-h-screen bg-background text-foreground font-sans p-4 md:p-8 flex flex-col items-center">
 
@@ -215,17 +372,34 @@ export default function Home() {
  >
  <Hexagon className="w-8 h-8 text-primary group-hover:-rotate-12 transition-transform drop-shadow" />
  <div className="flex flex-col">
- <span className="font-bold text-lg tracking-tight leading-none">ScrapeNative</span>
- <span className="text-[10px] uppercase font-bold tracking-widest text-[#FF895D]">Pro</span>
+ <span className="font-bold text-lg tracking-tight leading-none">Web2Native</span>
+ <span className="text-[10px] uppercase font-bold tracking-widest text-[#FF895D]">Demo API</span>
  </div>
  </div>
 
+ <div className="flex items-center gap-1">
+ <button
+ onClick={() => { localStorage.removeItem('w2n-entered'); setEntered(false); }}
+ className="p-2 rounded-full hover:bg-surface transition-colors"
+ aria-label="Kembali ke landing">
+ <ArrowLeft className="w-5 h-5 text-primary" />
+ </button>
+ <a
+ href="https://github.com/dezzorigin/web2native"
+ target="_blank"
+ rel="noreferrer"
+ aria-label="Lihat di GitHub"
+ className="p-2 rounded-full hover:bg-surface transition-colors"
+ >
+ <Github className="w-5 h-5 text-primary" />
+ </a>
  <button
  onClick={() => setShowHistory(!showHistory)}
  className="p-2 rounded-full hover:bg-surface transition-colors relative"
  aria-label="History">
  <History className="w-5 h-5 text-primary" />
  </button>
+ </div>
  </header>
 
  <main className="flex-1 w-full max-w-xl mx-auto flex flex-col gap-8 pb-12 px-2">
@@ -385,7 +559,7 @@ export default function Home() {
  Processing Wrap...
  </>
  ) : (
- "Get ScrapeNative Bundle"
+ "Get Web2Native Bundle"
  )}
  </button>
  )}
@@ -441,7 +615,7 @@ export default function Home() {
  href={buildStatus.android_url}
  target="_blank"
  rel="noreferrer"
- className="w-full bg-[#FF895D] hover:bg-[#ff7a45] text-white py-4 rounded-full flex items-center justify-center gap-2 transition-all font-bold text-[15px] shadow-[0_8px_20px_rgba(255,137,93,0.3)]"
+ className="w-full bg-[#FF895D] hover:bg-[#ff7a45] text-black py-4 rounded-full flex items-center justify-center gap-2 transition-all font-bold text-[15px] shadow-[0_8px_20px_rgba(255,137,93,0.3)]"
  >
  <Download className="w-5 h-5" /> Download Android APK
  </a>
@@ -554,7 +728,7 @@ export default function Home() {
  <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-gray-400 mb-2">
  Developer Credit
  </div>
- <div className="text-sm font-black text-primary tracking-tight"></div>
+ <div className="text-sm font-black text-primary tracking-tight">dezzorigin</div>
  </div>
  </div>
 

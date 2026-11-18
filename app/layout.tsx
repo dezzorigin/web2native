@@ -8,8 +8,16 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
- title: 'Web2Native',
- description: 'Convert your website into a native Android and iOS application easily. Developed by dezzorigin.',
+ title: 'Web2Native — Ubah Website jadi Aplikasi Android & iOS',
+ description: 'Masukkan nama aplikasi dan URL website — Web2Native membungkusnya jadi APK & IPA demo lewat webtonative.com. Tanpa coding.',
+ icons: {
+  icon: '/favicon.svg',
+ },
+ openGraph: {
+  title: 'Web2Native — Ubah Website jadi Aplikasi Android & iOS',
+  description: 'Masukkan nama aplikasi dan URL website — Web2Native membungkusnya jadi APK & IPA demo lewat webtonative.com. Tanpa coding.',
+  type: 'website',
+ },
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

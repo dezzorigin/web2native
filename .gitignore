@@ -10,6 +10,7 @@ __pycache__/
 dist/
 build/
 out/
+tsconfig.tsbuildinfo
 .DS_Store
 *.log
 
@@ -17,3 +18,4 @@ out/
 .open-next/
 .wrangler/
 .vercel/
+.lighthouseci/
