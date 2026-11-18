@@ -43,7 +43,7 @@ berikutnya; untuk langsung berlaku, redeploy sekali setelah set.
 |---|---|
 | `build` | `npm ci` → typecheck → lint → `npm run build` (static export + worker). Output `out/` di-upload sebagai artifact. |
 | `worker-test` | `node --test worker/_worker.test.mjs` (9 tes, upstream di-mock, tanpa network). |
-| `audit` | `npm audit --omit=dev --audit-level=high` (hanya dependensi produksi). |
+| `advisory-sweep` | `python3 scripts/advisory-sweep.py` — sapu dependensi **produksi** terhadap GitHub Advisory Database (high/critical → FAIL). Pengganti `npm audit --omit=dev`, yang tetap melaporkan advisory dev-only sehingga gagal deterministik padahal pohon produksi bersih. |
 | `lighthouse` | LHCI atas artifact `out/` (config `lighthouserc.json`). |
 | `live-smoke` | Non-gating (`continue-on-error`): cek HTTP 200 landing live + validasi `POST /api/build` (400) + `GET /api/status` tanpa requestId (400). Tidak membuat build beneran (tidak menghabiskan kuota demo). |
 

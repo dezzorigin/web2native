@@ -67,7 +67,7 @@ Lihat [docs/architecture.md](docs/architecture.md) dan [docs/diagram.svg](docs/d
 - Next.js 15 App Router, `output: 'export'` → `out/`.
 - Pages Worker (`worker/_worker.js` → `out/_worker.js`, deploy sebagai `_worker.bundle`) melayani `/api/*` + fallback `env.ASSETS`.
 - Upstream: `https://www.webtonative.com/api/v1` (build-app-request, check-app-status, demo/download).
-- CI: typecheck + lint + build + unit test worker + audit deps + lighthouse (lihat `.github/workflows/ci.yml`).
+- CI: typecheck + lint + build + unit test worker + advisory-sweep (gate keamanan dependensi produksi, pengganti `npm audit`) + lighthouse (lihat `.github/workflows/ci.yml`).
 
 ## 8. Milestone
 

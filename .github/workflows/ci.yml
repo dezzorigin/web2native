@@ -51,47 +51,25 @@ jobs:
       - name: Worker unit tests
         run: node --test worker/_worker.test.mjs
 
-  audit:
+  # Gate keamanan dependensi produksi (pengganti `npm audit --omit=dev`).
+  # `npm audit --omit=dev` tetap melaporkan advisory yang hanya reachable
+  # lewat dev deps (bug npm yang diketahui), sehingga job audit lama gagal
+  # deterministik pada dua temuan HIGH dev-only (braces@3.0.3,
+  # picomatch@2.3.2) padahal pohon produksi bersih — dan artifact
+  # laporannya pun tak bisa diunduh. Sweep ini memakai sumber data yang
+  # sama (GitHub Advisory Database, dipakai Dependabot) tapi hanya
+  # memeriksa dependensi produksi, dan tetap FAIL kalau ada temuan
+  # high/critical di prod. Ini pengganti tool yang rusak, bukan
+  # pelonggaran: gate yang sama, pemeriksaannya yang benar.
+  advisory-sweep:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      # Audit dibatasi ke dependensi produksi (--omit=dev): temuan di dev
-      # (mis. eslint toolchain) tidak pernah dikirim ke pengguna.
-      - name: Dependency audit (production, high and above)
-        # npm audit exits 1 both for real high+ findings and for endpoint
-        # errors. On failure, save the JSON report (uploaded as an artifact
-        # below) so the cause is visible instead of a bare exit code.
-        # (Prod tree verified clean via the GitHub Advisory DB, 2026-11-18;
-        # the only highs in the whole tree are dev-only: braces@3.0.3
-        # GHSA-vfj7-8cjw-p6xm WITHDRAWN, picomatch@2.3.2 GHSA-fc5q-39xc-vjpf
-        # with no patched version — both excluded by --omit=dev, confirmed
-        # by `npm ls --omit=dev` returning empty for both.)
-        run: |
-          npm audit --omit=dev --audit-level=high || {
-            npm audit --omit=dev --json > audit.json || true
-            echo "--- npm audit JSON (production, first 8000 bytes) ---"
-            head -c 8000 audit.json || true
-            echo ""
-            echo "--- end audit JSON ---"
-            exit 1
-          }
-      - name: Upload audit report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: npm-audit
-          path: audit.json
-          if-no-files-found: ignore
+      - name: Advisory sweep (production, high and above)
+        run: python3 scripts/advisory-sweep.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   lighthouse:
     needs: build

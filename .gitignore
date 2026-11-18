@@ -18,3 +18,4 @@ tsconfig.tsbuildinfo
 .open-next/
 .wrangler/
 .vercel/
+.lighthouseci/
