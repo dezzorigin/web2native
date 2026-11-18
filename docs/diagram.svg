@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="Inter, system-ui, sans-serif">
+ <defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+   <path d="M0 0L10 5L0 10z" fill="#1a1a1a"/>
+  </marker>
+ </defs>
+ <rect width="960" height="560" fill="#fdfbf7"/>
+ <text x="48" y="52" font-size="26" font-weight="800" fill="#111">Web2Native — alur build</text>
+ <text x="48" y="78" font-size="14" fill="#666">static export + Pages Worker → API demo webtonative.com → APK/IPA di S3</text>
+
+ <!-- Browser -->
+ <g>
+  <rect x="48" y="120" width="220" height="120" rx="16" fill="#ffffff" stroke="#e5e1d8" stroke-width="1.5"/>
+  <text x="68" y="152" font-size="13" font-weight="700" fill="#ff895d">1 · BROWSER</text>
+  <text x="68" y="180" font-size="16" font-weight="700" fill="#111">Landing → Builder</text>
+  <text x="68" y="204" font-size="12.5" fill="#555">isi nama app + URL website</text>
+  <text x="68" y="224" font-size="12.5" fill="#555">polling status tiap 5 detik</text>
+ </g>
+
+ <!-- Pages -->
+ <g>
+  <rect x="370" y="120" width="220" height="120" rx="16" fill="#ffffff" stroke="#e5e1d8" stroke-width="1.5"/>
+  <text x="390" y="152" font-size="13" font-weight="700" fill="#ff895d">2 · CLOUDFLARE PAGES</text>
+  <text x="390" y="180" font-size="16" font-weight="700" fill="#111">out/ + _worker.js</text>
+  <text x="390" y="204" font-size="12.5" fill="#555">POST /api/build</text>
+  <text x="390" y="224" font-size="12.5" fill="#555">GET /api/status · ASSETS</text>
+ </g>
+
+ <!-- Upstream -->
+ <g>
+  <rect x="692" y="120" width="220" height="120" rx="16" fill="#111111"/>
+  <text x="712" y="152" font-size="13" font-weight="700" fill="#ff895d">3 · WEBTONATIVE.COM</text>
+  <text x="712" y="180" font-size="16" font-weight="700" fill="#fff">API demo v1</text>
+  <text x="712" y="204" font-size="12.5" fill="#ccc">build-app-request</text>
+  <text x="712" y="224" font-size="12.5" fill="#ccc">check-app-status</text>
+ </g>
+
+ <line x1="268" y1="180" x2="366" y2="180" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+ <line x1="590" y1="180" x2="688" y2="180" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+
+ <!-- S3 -->
+ <g>
+  <rect x="692" y="300" width="220" height="110" rx="16" fill="#ffffff" stroke="#e5e1d8" stroke-width="1.5"/>
+  <text x="712" y="332" font-size="13" font-weight="700" fill="#ff895d">4 · S3 WEBTONATIVE</text>
+  <text x="712" y="360" font-size="16" font-weight="700" fill="#111">APK + iOS zip</text>
+  <text x="712" y="384" font-size="12.5" fill="#555">download 302 → file demo</text>
+ </g>
+ <line x1="802" y1="240" x2="802" y2="296" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+
+ <!-- Status derivation -->
+ <g>
+  <rect x="48" y="300" width="542" height="110" rx="16" fill="#fff5f0" stroke="#ffd8c9" stroke-width="1.5"/>
+  <text x="68" y="332" font-size="13" font-weight="700" fill="#ff895d">KENAPA STATUS BISA DONE — PELAJARAN v1.1.0</text>
+  <text x="68" y="360" font-size="13.5" fill="#333">check-app-status TIDAK PERNAH mengembalikan android_status / ios_status —</text>
+  <text x="68" y="382" font-size="13.5" fill="#333">hanya flag ketersediaan server. DONE diturunkan dari HEAD download URL:</text>
+  <text x="68" y="404" font-size="13.5" font-weight="700" fill="#111">302 = file sudah ada di S3 = platform DONE.</text>
+ </g>
+ <line x1="590" y1="355" x2="688" y2="355" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+
+ <!-- Bottom notes -->
+ <g font-size="13" fill="#555">
+  <text x="48" y="470">rate limit 1 build / 24 jam — client-side (localStorage) · riwayat build di localStorage · email build via env WEBTONATIVE_EMAIL</text>
+  <text x="48" y="496">hasil = APK/IPA demo webtonative.com, bukan build production toko aplikasi · upstream down → worker 502 (timeout 30 dtk)</text>
+  <text x="48" y="530" font-size="12" fill="#999">Web2Native v1.1.0 · 18 Nov 2026 · dezzorigin</text>
+ </g>
+</svg>

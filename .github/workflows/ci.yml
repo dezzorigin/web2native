@@ -1,0 +1,119 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build (static export + worker)
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+
+      - name: Upload static output
+        uses: actions/upload-artifact@v4
+        with:
+          name: out
+          path: out/
+
+  worker-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Worker unit tests
+        run: node --test worker/_worker.test.mjs
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Audit dibatasi ke dependensi produksi (--omit=dev): temuan di dev
+      # (mis. eslint toolchain) tidak pernah dikirim ke pengguna.
+      - name: Dependency audit (production, high and above)
+        run: npm audit --omit=dev --audit-level=high
+
+  lighthouse:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Download static output
+        uses: actions/download-artifact@v4
+        with:
+          name: out
+          path: out
+
+      - name: Lighthouse audit
+        run: npx --yes @lhci/cli@0.14.0 autorun --config=lighthouserc.json
+
+  # Live smoke test terhadap situs produksi (https://web2native.pages.dev).
+  # Read-only: TIDAK membuat build beneran (tidak menghabiskan kuota demo
+  # webtonative). Non-gating (continue-on-error): merahnya bisa berarti
+  # upstream sedang down, bukan kode repo yang rusak.
+  live-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    continue-on-error: true
+    steps:
+      - name: Landing live (HTTP 200 + marker)
+        run: |
+          set -e
+          code=$(curl -s -o /tmp/landing.html -w "%{http_code}" "https://web2native.pages.dev/")
+          echo "landing HTTP $code"
+          test "$code" = "200"
+          grep -qi "Ubah website jadi aplikasi" /tmp/landing.html || grep -qi "web2native" /tmp/landing.html
+
+      - name: API validation (tanpa network worker pun harus 400)
+        run: |
+          set -e
+          code=$(curl -s -o /tmp/b400.json -w "%{http_code}" -X POST "https://web2native.pages.dev/api/build" \
+            -H "content-type: application/json" -d '{"appName":"","websiteUrl":"x"}')
+          echo "POST /api/build (invalid) HTTP $code: $(cat /tmp/b400.json)"
+          test "$code" = "400"
+          code=$(curl -s -o /tmp/s400.json -w "%{http_code}" "https://web2native.pages.dev/api/status")
+          echo "GET /api/status (tanpa requestId) HTTP $code: $(cat /tmp/s400.json)"
+          test "$code" = "400"

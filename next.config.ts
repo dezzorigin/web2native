@@ -1,36 +1,19 @@
-import type {NextConfig} from 'next';
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
  reactStrictMode: true,
  eslint: {
- ignoreDuringBuilds: true,
+  ignoreDuringBuilds: true,
  },
  typescript: {
- ignoreBuildErrors: false,
+  ignoreBuildErrors: false,
  },
- // Allow access to remote image placeholder.
- images: {
- remotePatterns: [
- {
- protocol: 'https',
- hostname: 'picsum.photos',
- port: '',
- pathname: '/**', // This allows any path under the hostname
- },
- ],
- },
- output: 'standalone',
- transpilePackages: ['motion'],
- webpack: (config, {dev}) => {
- // HMR is disabled in AI Studio via DISABLE_HMR env var.
- // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
- if (dev && process.env.DISABLE_HMR === 'true') {
- config.watchOptions = {
- ignored: /.*/,
- };
- }
- return config;
- },
+ // Static export untuk Cloudflare Pages. API dinamis (/api/build,
+ // /api/status) TIDAK bisa hidup di sini — `next build` menolak route
+ // handler dinamis saat output: 'export'. Logika rutenya pindah ke
+ // Pages Worker (worker/_worker.js), yang di-copy ke out/_worker.js
+ // saat build dan di-deploy sebagai _worker.bundle oleh cf_pages.py.
+ output: 'export',
 };
 
 export default nextConfig;
