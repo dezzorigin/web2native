@@ -69,18 +69,29 @@ jobs:
       # (mis. eslint toolchain) tidak pernah dikirim ke pengguna.
       - name: Dependency audit (production, high and above)
         # npm audit exits 1 both for real high+ findings and for endpoint
-        # errors. On failure, dump the JSON so the cause is visible in the
-        # log instead of a bare exit code. (Prod tree verified clean via the
-        # GitHub Advisory DB, 2026-11-18; the first two runs failed here
-        # with no matching high/critical advisory.)
+        # errors. On failure, save the JSON report (uploaded as an artifact
+        # below) so the cause is visible instead of a bare exit code.
+        # (Prod tree verified clean via the GitHub Advisory DB, 2026-11-18;
+        # the only highs in the whole tree are dev-only: braces@3.0.3
+        # GHSA-vfj7-8cjw-p6xm WITHDRAWN, picomatch@2.3.2 GHSA-fc5q-39xc-vjpf
+        # with no patched version — both excluded by --omit=dev, confirmed
+        # by `npm ls --omit=dev` returning empty for both.)
         run: |
           npm audit --omit=dev --audit-level=high || {
-            echo "--- npm audit JSON (production) ---"
-            npm audit --omit=dev --json | head -c 8000 || true
+            npm audit --omit=dev --json > audit.json || true
+            echo "--- npm audit JSON (production, first 8000 bytes) ---"
+            head -c 8000 audit.json || true
             echo ""
             echo "--- end audit JSON ---"
             exit 1
           }
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit
+          path: audit.json
+          if-no-files-found: ignore
 
   lighthouse:
     needs: build
