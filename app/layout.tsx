@@ -8,6 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+ metadataBase: new URL('https://web2native.pages.dev'),
  title: 'Web2Native — Ubah Website jadi Aplikasi Android & iOS',
  description: 'Masukkan nama aplikasi dan URL website — Web2Native membungkusnya jadi APK & IPA demo lewat webtonative.com. Tanpa coding.',
  icons: {
@@ -17,6 +18,21 @@ export const metadata: Metadata = {
   title: 'Web2Native — Ubah Website jadi Aplikasi Android & iOS',
   description: 'Masukkan nama aplikasi dan URL website — Web2Native membungkusnya jadi APK & IPA demo lewat webtonative.com. Tanpa coding.',
   type: 'website',
+  url: 'https://web2native.pages.dev',
+  images: [
+   {
+    url: 'https://web2native.pages.dev/og-image.png',
+    width: 1200,
+    height: 630,
+    alt: 'Web2Native — Ubah Website jadi Aplikasi Android & iOS',
+   },
+  ],
+ },
+ twitter: {
+  card: 'summary_large_image',
+  title: 'Web2Native — Ubah Website jadi Aplikasi Android & iOS',
+  description: 'Masukkan nama aplikasi dan URL website — Web2Native membungkusnya jadi APK & IPA demo lewat webtonative.com. Tanpa coding.',
+  images: ['https://web2native.pages.dev/og-image.png'],
  },
 };
 
